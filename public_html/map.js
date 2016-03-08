@@ -8,5 +8,6 @@ map.mesh = null
 map.generateMap = function() {
   map.geometry = new THREE.BoxGeometry(1, 1, 1);
   map.material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+  map.geometry.translate(0, 0, -10);
   map.mesh = new THREE.Mesh( map.geometry, map.material);
 }

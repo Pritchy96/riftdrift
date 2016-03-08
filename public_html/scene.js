@@ -10,7 +10,7 @@ var controls = null;
 // Invoked when the window loads and the app can be started
 $(window).load(function() {
   //Pre scene creation code here.
-  map.genenerateMap();
+  map.generateMap();
   // Call the main function to start the app, when window is loaded.
   main();
 });
