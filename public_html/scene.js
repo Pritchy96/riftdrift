@@ -79,7 +79,8 @@ function main() {
 
   //Skybox.
   var geometry = new THREE.SphereGeometry(9000, 60, 40);
-  var material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('asset_src/skySphere.jpg') } );
+  var material = new THREE.MeshPhongMaterial( { map: 
+THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg') } );
   skyBox = new THREE.Mesh(geometry, material);
   skyBox.scale.set(-1, 1, 1);  //Flip so it's internally textured.
   skyBox.eulerOrder = 'XZY';
