@@ -10,7 +10,7 @@ var controls = null;
 // Invoked when the window loads and the app can be started
 $(window).load(function() {
   //Pre scene creation code here.
-
+  map.genenerateMap();
   // Call the main function to start the app, when window is loaded.
   main();
 });
@@ -80,12 +80,14 @@ function main() {
   //Skybox.
   var geometry = new THREE.SphereGeometry(9000, 60, 40);
   var material = new THREE.MeshPhongMaterial( { map: 
-THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg') } );
+  THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg') } );
   skyBox = new THREE.Mesh(geometry, material);
   skyBox.scale.set(-1, 1, 1);  //Flip so it's internally textured.
   skyBox.eulerOrder = 'XZY';
   skyBox.renderDepth = 1000.0;
   scene.add(skyBox);
+
+  scene.add(map.mesh);
 
   // Create a VR manager helper to enter and exit VR mode.
   var params = {
