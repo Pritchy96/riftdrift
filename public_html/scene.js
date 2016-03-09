@@ -113,4 +113,14 @@ function main() {
 animate(performance ? performance.now() : Date.now());
 }
 
+// Function that gets called whenever a key is pressed down
+function onKey(event) {
+  // key ','
+  if (event.keyCode == 90 /*z*/){	    
+    controls.zeroSensor();
+  } else if (event.keyCode == 87) {
+    camera.translateZ(-2);
+  }
+  
+}
 window.addEventListener('keydown', onKey, true);
