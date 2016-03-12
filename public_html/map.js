@@ -5,7 +5,7 @@ map.material = null;
 map.geometry = null;
 map.mesh = null
 map.noisemap = null;
-map.size = 3000;
+map.size = 1000;
 
 map.generateMap = function() {
 
@@ -15,7 +15,7 @@ map.generateMap = function() {
   var vertices = map.geometry.attributes.position.array;
 
   for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
-    vertices[ j + 2 ] = map.noisemap[ (i%map.size) ][ Math.floor(i/map.size) ] * 100;
+    vertices[ j + 2 ] = Math.pow(map.noisemap[ (i%map.size) ][ Math.floor(i/map.size) ], 1.5) * 500;
   }
 
   map.material = new THREE.MeshDepthMaterial( );
