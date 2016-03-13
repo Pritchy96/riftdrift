@@ -158,7 +158,10 @@ function onKey(event) {
       camera.translateZ(2);
       break;
     case(77): //M
-      map.material.wireframe = true;
+      if (map.material.wireframe)
+        map.material.wireframe = false;
+      else
+        map.material.wireframe = true;
       break;
   }
 }
