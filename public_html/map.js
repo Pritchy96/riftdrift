@@ -8,7 +8,6 @@ map.noisemap = null;
 map.size = 1000;
 
 map.generateMap = function() {
-
   map.noisemap = generatePoints(map.size, map.size, 10);
   map.geometry = new THREE.PlaneBufferGeometry(1000, 1000, map.size -1, map.size -1);
 
@@ -18,7 +17,8 @@ map.generateMap = function() {
     vertices[ j + 2 ] = Math.pow(map.noisemap[ (i%map.size) ][ Math.floor(i/map.size) ], 1.5) * 500;
   }
 
-  map.material = new THREE.MeshDepthMaterial( );
+  //map.material = new THREE.MeshDepthMaterial( );
+  map.material = new THREE.MeshPhongMaterial( { color : 0x999966, specular : 0x9999CC, shininess : 2} );
   map.geometry.translate(0, 0, -500);
   map.mesh = new THREE.Mesh( map.geometry, map.material);
 }

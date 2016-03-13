@@ -75,7 +75,35 @@ function main() {
 
   // Create a three.js scene.
   var scene = new THREE.Scene();
-  scene.add( new THREE.AmbientLight(0x444444));
+
+
+  //Lights
+  var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+  hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
+  hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
+  hemiLight.position.set( 50, 50, 50 );
+  scene.add( hemiLight );
+
+  var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  dirLight.position.set( 100, 750, 100 );
+  dirLight.position.multiplyScalar(50);
+  dirLight.name = "dirlight";
+  dirLight.shaowCameraVisible = true;
+  dirLight.castShadow = true;
+  dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024;
+
+  var d = 300;
+  dirLight.shadowCameraLeft = -d;
+  dirLight.shadowCameraRight = d;
+  dirLight.shadowCameraTop = d;
+  dirLight.shadowCameraBottom = -d;
+  dirLight.shadowCameraFar = 3500;
+  dirLight.shadowBias = -0.0001;
+  dirLight.shadowDarkness = 0.35;
+  scene.add( dirLight );
+
+  var light = new THREE.AmbientLight( 0xaaaaaa ); // soft white light
+  scene.add( light );
 
   //Skybox.
   var geometry = new THREE.SphereGeometry(9000, 60, 40);
@@ -86,6 +114,7 @@ function main() {
   skyBox.eulerOrder = 'XZY';
   skyBox.renderDepth = 1000.0;
   scene.add(skyBox);
+
 
   scene.add(map.mesh);
 
@@ -115,12 +144,22 @@ animate(performance ? performance.now() : Date.now());
 
 // Function that gets called whenever a key is pressed down
 function onKey(event) {
-  // key ','
-  if (event.keyCode == 90 /*z*/){	    
-    controls.zeroSensor();
-  } else if (event.keyCode == 87) {
-    camera.translateZ(-2);
+  // key 
+
+  switch (event.keyCode)
+  {
+    case(90): //Z
+      controls.zeroSensor();
+      break;
+    case(87): //W
+      camera.translateZ(-2);
+      break;
+    case(83): //S
+      camera.translateZ(2);
+      break;
+    case(77): //M
+      map.material.wireframe = true;
+      break;
   }
-  
 }
 window.addEventListener('keydown', onKey, true);

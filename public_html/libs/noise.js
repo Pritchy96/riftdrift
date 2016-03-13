@@ -1,7 +1,6 @@
   var totalSize;
 
-  this.generatePoints = function(width, height, rough)  
-  {  
+  this.generatePoints = function(width, height, rough) {  
     var p1, p2, p3, p4;  
     var points = [];
     for (var x = 0; x < width; x++)
@@ -19,8 +18,7 @@
     return points;
   }
 
-  this.splitRect = function(points, x, y, width, height, p1, p2, p3, p4)
-  {  
+  this.splitRect = function(points, x, y, width, height, p1, p2, p3, p4) {  
     var side1, side2, side3, side4, center;
     var transWidth = ~~(width / 2);
     var transHeight = ~~(height / 2);
