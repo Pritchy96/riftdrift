@@ -1,8 +1,12 @@
   var totalSize;
+  var gradient;
 
-  this.generatePoints = function(width, height, rough) {  
+  this.generatePoints = function(width, height, rough, graidentShape) {  
     var p1, p2, p3, p4;  
     var points = [];
+    gradient = makeCircularGradient(width, height);
+
+    //Create a 2D array.
     for (var x = 0; x < width; x++)
     {
       points[x] = [];
@@ -14,7 +18,7 @@
     p4 = Math.random();
     roughness = rough;
     totalSize = width + height;
-    this.splitRect(points, 0, 0, width, height, p1, p2, p3, p4);
+    this.splitRect(points, 0, 0, width, height, p1, p2, p3, p4, gradient);
     return points;
   }
 
@@ -58,16 +62,32 @@
     else 
     {
       //when last square is just a pixel, simply average it from the corners
-      points[x][y]= (p1 + p2 + p3 + p4) / 4;
+      points[x][y]= ((p1 + p2 + p3 + p4) / 4) * gradient[x][y];
     }
   }
 
-  this.normalize = function(val)  
-  {  
+  this.normalize = function(val) {  
     return (val < 0) ? 0 : (val > 1) ? 1 : val;
   }
   
-  this.shift = function(smallSize)
-  { 
+  this.shift = function(smallSize) { 
     return (Math.random() - 0.5) * smallSize / totalSize * roughness;
+  }
+
+  this.makeCircularGradient = function(width, height) {
+    var map = [], centerX = width / 2, centerY = height / 2;
+    var maxDistance = Math.sqrt((Math.pow(centerX, 2)) + (Math.pow(centerY, 2)));
+    
+    //Create 2D array.
+    for (var x = 0; x < width; x++) {
+      map[x] = [];
+      for (var y = 0; y < height; y++) {
+
+        var distX = Math.abs(x - centerX), distY = Math.abs(y - centerY);    //Distance fron center in x and y.
+        var distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));   //Distance from center.
+
+        map[x][y] = 1.0 - ((distance / maxDistance) * 1.0);
+      }
+    }
+    return map;
   }

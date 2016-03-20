@@ -8,7 +8,8 @@ map.noisemap = null;
 map.size = 1000;
 
 map.generateMap = function() {
-  map.noisemap = generatePoints(map.size, map.size, 4);
+  map.noisemap = generatePoints(map.size, map.size, 10);
+  //map.noisemap = makeCircularGradient(map.size, map.size);
   map.geometry = new THREE.PlaneBufferGeometry(map.size, map.size, map.size -1, map.size -1);
 
   var vertices = map.geometry.attributes.position.array;
@@ -20,14 +21,11 @@ map.generateMap = function() {
   //map.material = new THREE.MeshDepthMaterial( );
   map.material = new THREE.MeshPhongMaterial( { color: 0x999966, specular: 0x9999CC, shininess: 2, shading: THREE.FlatShading } );
   //map.material = new THREE.MeshLambertMaterial( { color: 0x999966,  } );
-  map.geometry.rotateZ(Math.PI);
+  map.geometry.rotateX(-Math.PI/2)
   map.geometry.center();
   map.geometry.scale(2000, 2000, 2000);
   map.mesh = new THREE.Mesh( map.geometry, map.material);
-
 }
-
-
 
 /*
   map.geometry = new THREE.BoxGeometry(1, 1, 1);

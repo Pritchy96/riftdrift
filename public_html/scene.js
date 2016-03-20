@@ -76,41 +76,37 @@ function main() {
   // Create a three.js scene.
   var scene = new THREE.Scene();
 
+  //Lights
+  hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
+  hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
+  hemiLight.position.set( 0, 500, 0 );
+  scene.add( hemiLight );
+
+  dirLight.position.set( -1, 0.75, 1 );
+  dirLight.position.multiplyScalar(50);
+  dirLight.name = "dirlight";
+  // dirLight.shadowCameraVisible = true;
+  dirLight.castShadow = true;
+  dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
+  var d = 300;
+  dirLight.shadowCameraLeft = -d;
+  dirLight.shadowCameraRight = d;
+  dirLight.shadowCameraTop = d;
+  dirLight.shadowCameraBottom = -d;
+  dirLight.shadowCameraFar = 3500;
+  dirLight.shadowBias = -0.0001;
+  dirLight.shadowDarkness = 0.35;
+  scene.add( dirLight );
+
+  scene.add( ambientLight );
 
 
-
-//Lights
-hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
-hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
-hemiLight.position.set( 0, 500, 0 );
-scene.add( hemiLight );
-
-dirLight.position.set( -1, 0.75, 1 );
-dirLight.position.multiplyScalar(50);
-dirLight.name = "dirlight";
-// dirLight.shadowCameraVisible = true;
-dirLight.castShadow = true;
-dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
-var d = 300;
-dirLight.shadowCameraLeft = -d;
-dirLight.shadowCameraRight = d;
-dirLight.shadowCameraTop = d;
-dirLight.shadowCameraBottom = -d;
-dirLight.shadowCameraFar = 3500;
-dirLight.shadowBias = -0.0001;
-dirLight.shadowDarkness = 0.35;
-scene.add( dirLight );
-
-scene.add( ambientLight );
-
-
-//Fog
-//scene.fog = new THREE.FogExp2(0xCCCCFF,0.0004);
-//scene.fog.color.setHSL( 0.51, 0.6, 0.6 );
-
+  //Fog
+  //scene.fog = new THREE.FogExp2(0xCCCCFF,0.0004);
+  //scene.fog.color.setHSL( 0.51, 0.6, 0.6 );
 
   scene.add(map.mesh);
-  camera.position.set(418437.549225975,-420818.38513359305,652975.3569693714);
+  camera.position.set(334179, 407747, 649907)
   camera.lookAt(map.mesh.position);
 
   //Skybox.
@@ -122,9 +118,6 @@ scene.add( ambientLight );
   skyBox.eulerOrder = 'XZY';
   skyBox.renderDepth = 1000.0;
   scene.add(skyBox);
-
-
-
 
   // Create a VR manager helper to enter and exit VR mode.
   var params = {
