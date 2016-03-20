@@ -6,6 +6,9 @@ var target = null;
 var scene = null;
 var camera = null;
 var controls = null;
+var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+var ambientLight = new THREE.AmbientLight( 0x444444 ); // soft white light
 
 // Invoked when the window loads and the app can be started
 $(window).load(function() {
@@ -51,10 +54,7 @@ function main() {
   document.body.appendChild(renderer.domElement);
 
   // Create the camera.
-  camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 800);
-  camera.position.x = 0;
-  camera.position.y = 0;
-  camera.position.z = 0;
+  camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 999999999);
 
   // Call updateView of the first time so the camera is in the correct position
   updateView();
@@ -77,36 +77,44 @@ function main() {
   var scene = new THREE.Scene();
 
 
-  //Lights
-  var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-  hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
-  hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
-  hemiLight.position.set( 50, 50, 50 );
-  scene.add( hemiLight );
 
-  var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-  dirLight.position.set( 100, 750, 100 );
-  dirLight.position.multiplyScalar(50);
-  dirLight.name = "dirlight";
-  dirLight.shaowCameraVisible = true;
-  dirLight.castShadow = true;
-  dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024;
 
-  var d = 300;
-  dirLight.shadowCameraLeft = -d;
-  dirLight.shadowCameraRight = d;
-  dirLight.shadowCameraTop = d;
-  dirLight.shadowCameraBottom = -d;
-  dirLight.shadowCameraFar = 3500;
-  dirLight.shadowBias = -0.0001;
-  dirLight.shadowDarkness = 0.35;
-  scene.add( dirLight );
+//Lights
+hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
+hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
+hemiLight.position.set( 0, 500, 0 );
+scene.add( hemiLight );
 
-  var light = new THREE.AmbientLight( 0xaaaaaa ); // soft white light
-  scene.add( light );
+dirLight.position.set( -1, 0.75, 1 );
+dirLight.position.multiplyScalar(50);
+dirLight.name = "dirlight";
+// dirLight.shadowCameraVisible = true;
+dirLight.castShadow = true;
+dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
+var d = 300;
+dirLight.shadowCameraLeft = -d;
+dirLight.shadowCameraRight = d;
+dirLight.shadowCameraTop = d;
+dirLight.shadowCameraBottom = -d;
+dirLight.shadowCameraFar = 3500;
+dirLight.shadowBias = -0.0001;
+dirLight.shadowDarkness = 0.35;
+scene.add( dirLight );
+
+scene.add( ambientLight );
+
+
+//Fog
+//scene.fog = new THREE.FogExp2(0xCCCCFF,0.0004);
+//scene.fog.color.setHSL( 0.51, 0.6, 0.6 );
+
+
+  scene.add(map.mesh);
+  camera.position.set(418437.549225975,-420818.38513359305,652975.3569693714);
+  camera.lookAt(map.mesh.position);
 
   //Skybox.
-  var geometry = new THREE.SphereGeometry(9000, 60, 40);
+  var geometry = new THREE.SphereGeometry(90000000, 60, 40);
   var material = new THREE.MeshPhongMaterial( { map: 
   THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg') } );
   skyBox = new THREE.Mesh(geometry, material);
@@ -116,7 +124,7 @@ function main() {
   scene.add(skyBox);
 
 
-  scene.add(map.mesh);
+
 
   // Create a VR manager helper to enter and exit VR mode.
   var params = {
@@ -152,10 +160,10 @@ function onKey(event) {
       controls.zeroSensor();
       break;
     case(87): //W
-      camera.translateZ(-2);
+      camera.translateZ(-2005);
       break;
     case(83): //S
-      camera.translateZ(2);
+      camera.translateZ(2005);
       break;
     case(77): //M
       if (map.material.wireframe)

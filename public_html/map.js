@@ -8,19 +8,23 @@ map.noisemap = null;
 map.size = 1000;
 
 map.generateMap = function() {
-  map.noisemap = generatePoints(map.size, map.size, 10);
-  map.geometry = new THREE.PlaneBufferGeometry(1000, 1000, map.size -1, map.size -1);
+  map.noisemap = generatePoints(map.size, map.size, 4);
+  map.geometry = new THREE.PlaneBufferGeometry(map.size, map.size, map.size -1, map.size -1);
 
   var vertices = map.geometry.attributes.position.array;
 
   for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
-    vertices[ j + 2 ] = Math.pow(map.noisemap[ (i%map.size) ][ Math.floor(i/map.size) ], 1.5) * 500;
+    vertices[ j + 2 ] = Math.pow(map.noisemap[ (i%map.size) ][ Math.floor(i/map.size) ], 2) * 500;
   }
 
-  map.material = new THREE.MeshDepthMaterial( );
-  //map.material = new THREE.MeshPhongMaterial( { color : 0x999966, specular : 0x9999CC, shininess : 2} );
-  map.geometry.translate(0, 0, -500);
+  //map.material = new THREE.MeshDepthMaterial( );
+  map.material = new THREE.MeshPhongMaterial( { color: 0x999966, specular: 0x9999CC, shininess: 2, shading: THREE.FlatShading } );
+  //map.material = new THREE.MeshLambertMaterial( { color: 0x999966,  } );
+  map.geometry.rotateZ(Math.PI);
+  map.geometry.center();
+  map.geometry.scale(2000, 2000, 2000);
   map.mesh = new THREE.Mesh( map.geometry, map.material);
+
 }
 
 
