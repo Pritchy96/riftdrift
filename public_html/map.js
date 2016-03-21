@@ -8,7 +8,7 @@ map.noisemap = null;
 map.size = 1000;
 
 map.generateMap = function() {
-  map.noisemap = generatePoints(map.size, map.size, 2);
+  map.noisemap = generatePoints(map.size, map.size, 12);
   //map.noisemap = makeCircularGradient(map.size, map.size);
   map.geometry = new THREE.PlaneBufferGeometry(map.size, map.size, map.size -1, map.size -1);
 
