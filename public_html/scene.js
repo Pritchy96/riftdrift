@@ -144,7 +144,7 @@ function main() {
     lastRender = timestamp;
 
     //Move forward.
-    camera.translateZ(-100);
+    camera.translateZ(-200);
     controls.update();
 
     // Render the scene through the manager.
