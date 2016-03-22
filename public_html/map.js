@@ -25,7 +25,7 @@ map.generateMap = function() {
 
     var x = i%map.size; var y = Math.floor(i/map.size);
     //Interpolate noise map with gradient map to create general terrain look.
-    var height = noise.interpolateVals(map.noisemap[x][y], map.gradientmap[x][y], 0.4, 0.8);
+    var height = noise.interpolateVals(map.noisemap[x][y], map.gradientmap[x][y], 0.4, 0.6);
     //exponentialise (Makes taller bits taller).
     height = Math.pow(height, 2);
 
@@ -38,21 +38,20 @@ map.generateMap = function() {
     maxHeight*=scaleValue;
   
 
-    if (height < (maxHeight/4)) {
-      //Shallow Sea.
-      colour[j + 0] = 0.149;
-      colour[j + 1] = 0.235;
-      colour[j + 2] = 0.286;
+    if (height < (maxHeight/10)) {
+      //Bare
+      colour[j + 0] = 0.447;
+      colour[j + 1] = 0.447;
+      colour[j + 2] = 0.447;
     } else if (height < (maxHeight/3)) {
-      //SubTropical Desert
-      colour[j + 0] = 0.851;
-      colour[j + 1] = 0.745;
-      colour[j + 2] = 0.553;
-    //} else if (height < (maxHeight/6)) {
-    //  //Grassland
-    //  colour[j + 0] = 0.525;
-    //  colour[j + 1] = 0.667;
-    //  colour[j + 2] = 0.298;
+      //Grass
+      colour[j + 0] = 0.525;
+      colour[j + 1] = 0.667;
+      colour[j + 2] = 0.298;
+
+      colour[j + 0] = 0.747;
+      colour[j + 1] = 0.747;
+      colour[j + 2] = 0.747;
     } else if (height < (maxHeight/2)) {
       //Bare
       colour[j + 0] = 0.447;

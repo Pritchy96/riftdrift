@@ -126,7 +126,7 @@ function main() {
   waterGeometry.rotateX(-Math.PI/2)
   waterPlane = new THREE.Mesh(waterGeometry, waterMaterial);
   waterPlane.renderDepth = 1000.0;
-  waterPlane.translateY(-40000);
+  waterPlane.translateY(-24000);
   scene.add(waterPlane);
 
   // Create a VR manager helper to enter and exit VR mode.
