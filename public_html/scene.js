@@ -102,22 +102,32 @@ function main() {
 
 
   //Fog
-  //scene.fog = new THREE.FogExp2(0xCCCCFF,0.0004);
+  scene.fog = new THREE.FogExp2(0xDAFEFE, 0.00004);
   //scene.fog.color.setHSL( 0.51, 0.6, 0.6 );
 
   scene.add(map.mesh);
-  camera.position.set(334179, 407747, 649907)
+  camera.position.set(33417, 40774, 64990)
   camera.lookAt(map.mesh.position);
 
   //Skybox.
-  var geometry = new THREE.SphereGeometry(90000000, 60, 40);
-  var material = new THREE.MeshPhongMaterial( { map: 
-  THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg') } );
-  skyBox = new THREE.Mesh(geometry, material);
+  var skyGeometry = new THREE.SphereGeometry(900000, 60, 40);
+  var skyMaterial = new THREE.MeshPhongMaterial( 
+        { map: THREE.ImageUtils.loadTexture('asset_src/textures/skySphere.jpg')} );
+  skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
   skyBox.scale.set(-1, 1, 1);  //Flip so it's internally textured.
   skyBox.eulerOrder = 'XZY';
   skyBox.renderDepth = 1000.0;
   scene.add(skyBox);
+
+  //Water plane.
+  var waterGeometry = new THREE.PlaneGeometry(900000, 900000, 1);
+  var waterMaterial = new THREE.MeshPhongMaterial( { color: 0x263C49 });
+  waterGeometry.center();
+  waterGeometry.rotateX(-Math.PI/2)
+  waterPlane = new THREE.Mesh(waterGeometry, waterMaterial);
+  waterPlane.renderDepth = 1000.0;
+  waterPlane.translateY(-40000);
+  scene.add(waterPlane);
 
   // Create a VR manager helper to enter and exit VR mode.
   var params = {
@@ -133,6 +143,8 @@ function main() {
     var delta = Math.min(timestamp - lastRender, 500);
     lastRender = timestamp;
 
+    //Move forward.
+    camera.translateZ(-100);
     controls.update();
 
     // Render the scene through the manager.
@@ -153,10 +165,13 @@ function onKey(event) {
       controls.zeroSensor();
       break;
     case(87): //W
-      camera.translateZ(-2005);
+      camera.translateZ(-100);
+      break;
+    case(69): //E
+      camera.translateZ(-1500);
       break;
     case(83): //S
-      camera.translateZ(2005);
+      camera.translateZ(100);
       break;
     case(77): //M
       if (map.material.wireframe)

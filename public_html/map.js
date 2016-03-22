@@ -5,37 +5,54 @@ map.material = [];
 map.geometry = [];
 map.mesh = null
 map.noisemap = null;
+map.gradientmap = null; //creates center-centric (hurr) islands.
 map.size = 1000;
 
 map.generateMap = function() {
-  map.noisemap = generatePoints(map.size, map.size, 2);
-  //map.noisemap = makeCircularGradient(map.size, map.size);
+  //Create basic plane to be modified.
   map.geometry = new THREE.PlaneBufferGeometry(map.size, map.size, map.size -1, map.size -1);
+  var vertices = map.geometry.attributes.position.array;  //Get position verts to be modified.
+  var colour = new Float32Array(vertices.length * 3); //Create colour buffer.
 
-  var vertices = map.geometry.attributes.position.array;
-  var colour = new Float32Array(vertices.length * 3);
+  //Generate basic maps.
+  map.noisemap = noise.generatePoints(map.size, map.size, 12);
+  map.gradientmap = noise.makeCircularGradient(map.size, map.size);
+  var detailmap = noise.generatePoints(map.size, map.size, 200);
+
+  var scaleValue = 500;  //Scale from 0-1 to real height values.
+
   for ( var i = 0, j = 0; i < vertices.length; i ++, j += 3 ) {
-    var noisemapValue = map.noisemap[ (i%map.size) ][ Math.floor(i/map.size)];  //Between 0 and 1.
-    var heightMultipler = 20;
-    var height = Math.pow(noisemapValue*heightMultipler, 2) ;
-    var maxHeight = Math.pow(1*heightMultipler, 2); //maximum noisemaValue = 1.
 
+    var x = i%map.size; var y = Math.floor(i/map.size);
+    //Interpolate noise map with gradient map to create general terrain look.
+    var height = noise.interpolateVals(map.noisemap[x][y], map.gradientmap[x][y], 0.4, 0.8);
+    //exponentialise (Makes taller bits taller).
+    height = Math.pow(height, 2);
 
-    if (height < (maxHeight/10)) {
+    //use second noise map to perturb (create texture/dunes)
+    //height = noise.interpolateVals(detailmap[x][y], height, 0.005, 1);
+
+    height *= scaleValue; //Scale up to real values from 0-1.
+
+    var maxHeight = Math.pow(1.3, 2); //maximum noisemaValue = 3.
+    maxHeight*=scaleValue;
+  
+
+    if (height < (maxHeight/4)) {
       //Shallow Sea.
       colour[j + 0] = 0.149;
       colour[j + 1] = 0.235;
       colour[j + 2] = 0.286;
-    } else if (height < (maxHeight/7)) {
+    } else if (height < (maxHeight/3)) {
       //SubTropical Desert
       colour[j + 0] = 0.851;
       colour[j + 1] = 0.745;
       colour[j + 2] = 0.553;
-    } else if (height < (maxHeight/6)) {
-      //Grassland
-      colour[j + 0] = 0.525;
-      colour[j + 1] = 0.667;
-      colour[j + 2] = 0.298;
+    //} else if (height < (maxHeight/6)) {
+    //  //Grassland
+    //  colour[j + 0] = 0.525;
+    //  colour[j + 1] = 0.667;
+    //  colour[j + 2] = 0.298;
     } else if (height < (maxHeight/2)) {
       //Bare
       colour[j + 0] = 0.447;
@@ -59,15 +76,19 @@ map.generateMap = function() {
   //Adjust position and scale in world.
   map.geometry.rotateX(-Math.PI/2)
   map.geometry.center();
-  map.geometry.scale(2000, 2000, 2000);
+  map.geometry.scale(200, 200, 200);
 
   //Attempts to make this work.
-  map.material.needsUpdate = true;
+  //map.geometry.computeTangents();
+  map.geometry.computeFaceNormals();
   map.geometry.computeVertexNormals();
-  map.geometry.buffersNeedUpdate = true;
-  map.geometry.computeTangents();
+  map.material.needsUpdate = true;
+  //map.geometry.buffersNeedUpdate = true;
+  //
 
   map.mesh = new THREE.Mesh( map.geometry, map.material);
+
+
 }
 
 
