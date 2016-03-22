@@ -9,6 +9,7 @@ map.gradientmap = null; //creates center-centric (hurr) islands.
 map.size = 1000;
 
 map.generateMap = function() {
+  
   //Create basic plane to be modified.
   map.geometry = new THREE.PlaneBufferGeometry(map.size, map.size, map.size -1, map.size -1);
   var vertices = map.geometry.attributes.position.array;  //Get position verts to be modified.
