@@ -1,0 +1,25 @@
+{
+  "name": "riftdrift",
+  "version": "0.0.2",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.15.2",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pritchy96/riftdrift.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pritchy96/riftdrift/issues"
+  },
+  "homepage": "https://github.com/Pritchy96/riftdrift#readme"
+}
